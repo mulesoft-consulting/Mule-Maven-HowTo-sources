@@ -1,0 +1,250 @@
+<?xml version="1.0"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+	<activeProfiles>
+		<activeProfile>global-settings</activeProfile>
+		<activeProfile>standard-repositories</activeProfile>
+	</activeProfiles>
+
+	<profiles>
+		<profile>
+			<id>global-settings</id>
+			<properties>
+				<master.org.name>blog</master.org.name>
+				<company.abbr>blog-</company.abbr>
+				<my-organization-anypoint-orgid>${my_ap_orgid}</my-organization-anypoint-orgid>
+				<api.businessGroup>APIS</api.businessGroup>
+				<ap_id>${my_ap_clid}</ap_id>
+				<ap_secret>${my_ap_clid_secret}</ap_secret>
+
+				<ch.workers>1</ch.workers>
+				<ch.workerType>MICRO</ch.workerType>
+				<ch.deploymentTimeout>300000</ch.deploymentTimeout>
+				<ch.region>us-west-2</ch.region>
+				<cloudhub.domain>.us-w2.cloudhub.io</cloudhub.domain>
+
+				<rtf.domain></rtf.domain>
+				<rtf.cpuReserved>100m</rtf.cpuReserved>
+				<rtf.memoryReserved>512Mi</rtf.memoryReserved>
+
+				<corporate-artifact-repository-url>https://my-nexus.com:8443/repository/c4e</corporate-artifact-repository-url>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>no-environment</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value></value>
+				</property>
+			</activation>
+			<properties>
+				<deploy.app.suffix>local</deploy.app.suffix>
+				<deploy.environment>LOCAL</deploy.environment>
+				<deploy.target></deploy.target>
+				<deploy.targetType></deploy.targetType>
+			</properties>
+		</profile>
+
+		
+		<!--
+			These are the internal network deployment configurations, one for each environment, server, server-group or cluster supported for this organization
+		-->		
+
+		<profile>
+			<id>dev</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>dev</value>
+				</property>
+			</activation>
+			<properties>
+				<cloudhub.name>${company.abbr}${project.artifactId}-${env}</cloudhub.name>
+				<hybrid.name>${company.abbr}${project.artifactId}-${env}</hybrid.name>
+				<rtf.name>${company.abbr}${project.artifactId}-${env}</rtf.name>
+				<deploy.environment>DEV</deploy.environment>
+				<deploy.target>dev</deploy.target>
+				<deploy.rtf-target>blog-rtf-np</deploy.rtf-target>
+				<deploy.targetType>serverGroup</deploy.targetType>
+				<rtf.domain>api-np.blog.com</rtf.domain>
+			</properties>
+		</profile>
+		<profile>
+			<id>test</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>test</value>
+				</property>
+			</activation>
+			<properties>
+				<cloudhub.name>${company.abbr}${project.artifactId}-${env}</cloudhub.name>
+				<hybrid.name>${company.abbr}${project.artifactId}-${env}</hybrid.name>
+				<rtf.name>${company.abbr}${project.artifactId}-${env}</rtf.name>
+				<deploy.environment>TEST</deploy.environment>
+				<deploy.target>test</deploy.target>
+				<deploy.rtf-target>blog-rtf-np</deploy.rtf-target>
+				<deploy.targetType>serverGroup</deploy.targetType>
+				<rtf.domain>api-np.blog.com</rtf.domain>
+			</properties>
+		</profile>
+		<profile>
+			<id>prd</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>prd</value>
+				</property>
+			</activation>
+			<properties>
+				<cloudhub.name>${company.abbr}${project.artifactId}</cloudhub.name>
+				<hybrid.name>${company.abbr}${project.artifactId}</hybrid.name>
+				<rtf.name>${company.abbr}${project.artifactId}</rtf.name>
+				<deploy.environment>PRD</deploy.environment>
+				<deploy.target>prd</deploy.target>
+				<deploy.rtf-target>blog-rtf-prd</deploy.rtf-target>
+				<deploy.targetType>serverGroup</deploy.targetType>
+				<rtf.domain>api.blog.com</rtf.domain>
+			</properties>
+		</profile>
+
+		<!--
+			These are the repositories that will be used to resolve dependencies
+		-->
+
+		<profile>
+			<id>standard-repositories</id>
+			<repositories>
+				<repository>
+					<id>Central</id>
+					<name>Central</name>
+					<url>https://repo1.maven.org/maven2</url>
+					<layout>default</layout>
+				</repository>
+
+				<repository>
+					<id>mulesoft-exchange-repository</id>
+					<name>Mulesoft Exchange Repository</name>
+					<url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+					<layout>default</layout>
+				</repository>
+
+			        <repository>
+			            <id>mule</id>
+			            <name>Mule Repository</name>
+			            <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
+			        </repository>
+			        <repository>
+			            <id>releases-ee</id>
+			            <name>Mule Release EE Repository</name>
+			            <url>https://repository.mulesoft.org/nexus/content/repositories/releases-ee/</url>
+ 			       </repository>
+
+				<repository>
+					<id>my-organization-exchange-repository</id>
+					<name>My OrgID's Mulesoft Exchange Repository</name>
+					<url>https://maven.anypoint.mulesoft.com/api/v3/organizations/${my-organization-anypoint-orgid}/maven</url>
+					<layout>default</layout>
+				</repository>
+
+			<!-- uncomment to use the corporate artifact repository (don't forget to configure the url
+
+				<repository>
+					<id>corporate-artifact-repository</id>
+					<name>Corporate Artifact Repository</name>
+					<url>https://repo-001.corporate.com:8443/repository/</url>
+					<layout>default</layout>
+				</repository>
+			-->
+
+			</repositories>
+
+			<pluginRepositories>
+			        <pluginRepository>
+			          <id>Central</id>
+			          <url>http://repo1.maven.org/maven2</url>
+			          <releases>
+			            <enabled>true</enabled>
+			          </releases>
+			        </pluginRepository>
+				<pluginRepository>
+					<id>my-organization-exchange-repository</id>
+					<name>My OrgID's Mulesoft Exchange Repository</name>
+					<url>https://maven.anypoint.mulesoft.com/api/v3/organizations/${my-organization-anypoint-orgid}/maven</url>
+					<layout>default</layout>
+				</pluginRepository>
+				<pluginRepository>
+					<id>mulesoft-plugin-releases</id>
+					<name>mulesoft release repository</name>
+					<layout>default</layout>
+					<url>https://repository.mulesoft.org/releases/</url>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>		
+	</profiles>
+
+	<pluginGroups>
+		<pluginGroup>org.mule.tools</pluginGroup>
+	</pluginGroups>
+
+	<servers>
+		<!--configure the user credentials to access the repositories-->
+		<server>
+			<id>corporate-artifact-repository</id>
+			<username>me</username>
+			<password>password</password>
+		</server>
+		<server>
+			<id>my-organization-exchange-repository</id>
+			<username>${u}</username>
+			<password>${p}</password>
+		</server>
+		<server>
+			<id>mulesoft-exchange-repository</id>
+			<username>${u}</username>
+			<password>${p}</password>
+		</server>
+		<server>
+			<id>mule</id>
+			<username>${my_mule_nexus_user}</username>
+			<password>${my_mule_nexus_pw}</password>
+		</server>
+		<server>
+			<id>releases-ee</id>
+			<username>${my_mule_nexus_user}</username>
+			<password>${my_mule_nexus_pw}</password>
+		</server>
+		<server>
+			<id>mulesoft-plugin-releases</id>
+			<username>${my_mule_nexus_user}</username>
+			<password>${my_mule_nexus_pw}</password>
+		</server>
+	</servers>
+
+	<proxies>
+		<proxy>
+			<id>proxyOne</id>
+			<active>false</active>
+			<protocol>http</protocol>
+			<host>x.x.x.x</host>
+			<port>80</port>
+			<nonProxyHosts>localhost|127.0.0.1|10.*.*.*</nonProxyHosts>
+		</proxy>
+		<proxy>
+			<id>proxyTwo</id>
+			<active>false</active>
+			<protocol>http</protocol>
+			<host>x.x.x.x</host>
+			<port>10204</port>
+			<nonProxyHosts>localhost|127.0.0.1|10.*.*.*</nonProxyHosts>
+		</proxy>
+	</proxies>
+
+</settings>
