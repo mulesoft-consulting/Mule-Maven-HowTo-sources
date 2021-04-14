@@ -19,6 +19,11 @@
 				<ap_id>${my_ap_clid}</ap_id>
 				<ap_secret>${my_ap_clid_secret}</ap_secret>
 
+				<my_scm_connection_suffix><.git/my_scm_connection_suffix>
+				<my_scm_connection_prefix>scm:git:ssh://git@github.com/xxx/</my_scm_connection_prefix>
+				<my_scm_url_prefix>git@github.com:xxx/</my_scm_url_prefix>
+				<my_scm_url_suffix></my_scm_url_suffix>
+
 				<ch.workers>1</ch.workers>
 				<ch.workerType>MICRO</ch.workerType>
 				<ch.deploymentTimeout>300000</ch.deploymentTimeout>
