@@ -3,6 +3,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
 
+<!-- Standardized settings.xml from the Mule Maven HowTo #1 blog -->
+
 	<activeProfiles>
 		<activeProfile>global-settings</activeProfile>
 		<activeProfile>standard-repositories</activeProfile>
@@ -56,7 +58,11 @@
 
 		
 		<!--
-			These are the internal network deployment configurations, one for each environment, server, server-group or cluster supported for this organization
+                        -------------------------
+                        Deployment Configurations
+                        -------------------------
+
+			These are the deployment configurations, one for each environment, server, server-group, cluster or fabric
 		-->		
 
 		<profile>
