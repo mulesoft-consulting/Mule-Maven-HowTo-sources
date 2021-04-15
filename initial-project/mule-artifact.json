@@ -1,0 +1,5 @@
+{
+	"secureProperties": ["my.client_secret", "mule.key", "anypoint.platform.client_secret"
+	],
+	"minMuleVersion": "4.2.2"
+}

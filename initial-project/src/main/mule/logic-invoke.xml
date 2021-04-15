@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+
+	<flow name="logic-invoke.ping-sys-api" doc:id="ab72c2f5-bcc1-4409-a5aa-f754b114b5d3">
+		<try doc:name="Try" doc:id="9aeab5f5-8628-4823-807e-77a90d85cab4">
+			<http:request method="GET" doc:name="Ping Request"
+				config-ref="request_api_configuration" path="/ping">
+				<http:headers ><![CDATA[#[output application/java
+---
+{
+	"client_id" : "${my.CLIENT_ID}",
+	"client_secret" : "${my.CLIENT_PW}",
+	"x-dependent-ping" : attributes.headers.'x-dependent-ping',
+	"x-transaction-id" : vars.transactionProperties.'x-transaction-id'
+}]]]></http:headers>
+				<http:response-validator>
+					<http:success-status-code-validator
+						values="200" />
+				</http:response-validator>
+			</http:request>
+
+			<error-handler>
+				<on-error-continue enableNotifications="false"
+					logException="true" doc:name="On Error Continue" doc:id="256f6e68-ed04-478e-aa8e-1eaa5b48d926" >
+				</on-error-continue>
+			</error-handler>
+		</try>
+		<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="20d9fea3-de09-4a6e-ad9e-675fc281dbdf">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  dependentApiResponse: payload,
+  module: vars.moduleName,
+  projectVersion: "${project.version}",
+  apiVersion: "${api.version}",
+  env: "${mule.env}",
+  server: "${mule.server}",
+  status: "200",
+  message: "Alive"
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+	</flow>
+</mule>

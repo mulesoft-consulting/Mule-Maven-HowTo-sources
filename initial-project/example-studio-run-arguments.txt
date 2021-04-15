@@ -1,0 +1,12 @@
+-M-XX:-UseBiasedLocking
+-Danypoint.platform.gatekeeper=disabled 
+-Dmule.env=DEV
+-Dmule.server=localhost
+-Dhttp.port=8081
+-Dhttps.port=8082
+-Dapi.http.port=8091
+-Dapi.https.port=8092
+-Dapi.version=1.0.0
+-Dproject.version=1.0.0
+
+

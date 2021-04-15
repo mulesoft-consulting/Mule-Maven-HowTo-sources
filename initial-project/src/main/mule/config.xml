@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule 
+	xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+
+<!--
+	<api-gateway:autodiscovery apiId="${api.id}"
+		flowRef="api-main" doc:name="API Autodiscovery" />
+-->
+
+	<configuration defaultErrorHandler-ref="apikit-errors" />
+
+	<global-property doc:name="Global Property" name="mule.env" value="DEV" />
+	<global-property doc:name="Global Property" name="mule.server" value="localhost" />
+
+	<global-property doc:name="Global Property" name="api.http.port" value="8081" />
+	<global-property doc:name="Global Property" name="api.https.port" value="8082" />
+	<global-property doc:name="Global Property" name="api.name" value="blog-e-test1" />
+	<global-property doc:name="Global Property" name="api.version" value="1.0.0" />
+	<global-property doc:name="Global Property" name="api.id" value="15958180" />
+
+	<global-property doc:name="Global Property" name="project.version" value="1.0.0" />
+
+	<global-property doc:name="Global Property" name="request.api.path" value="/v1" />
+	<global-property doc:name="Global Property" name="request.api.host" value=".com" />
+	<global-property doc:name="Global Property" name="request.api.port" value="8080" />
+
+	<global-property doc:name="Global Property" name="listener.tls.password" value="changeit" />
+	<global-property doc:name="Global Property" name="listener.tls.key.password" value="changeit" />
+	<global-property doc:name="Global Property" name="listener.host" value="0.0.0.0" />
+
+	<global-property doc:name="Global Property" name="my.CLIENT_ID" value="x" />
+	<global-property doc:name="Global Property" name="my.CLIENT_PW" value="x" />
+
+	<configuration-properties doc:name="Configuration properties" file="common.properties" />
+	<configuration-properties doc:name="Configuration properties" file="${mule.env}-config.properties" />
+
+	<http:request-config name="request_api_configuration" doc:name="request api configuration" basePath="${request.api.path}">
+		<http:request-connection host="${request.api.host}" port="${request.api.port}" protocol="HTTPS" tlsContext="TLS_allow_unsigned_certs"/>
+	</http:request-config>
+	
+	<tls:context name="TLS_allow_unsigned_certs" doc:name="TLS Context" doc:id="8275fb27-8de8-4aae-ba0a-ca65ad30c143" >
+		<tls:trust-store insecure="true" />
+	</tls:context>
+
+	<http:listener-config name="api-httpListenerConfig">
+		<http:listener-connection host="${listener.host}"
+			port="${api.https.port}" protocol="HTTPS">
+			<tls:context >
+				<tls:key-store type="jks" path="httplistener.jks" alias="mule" keyPassword="${listener.tls.key.password}" password="${listener.tls.password}" />
+			</tls:context>
+		</http:listener-connection>
+	</http:listener-config>
+
+</mule>

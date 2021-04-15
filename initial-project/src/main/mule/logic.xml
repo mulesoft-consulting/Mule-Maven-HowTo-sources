@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+
+	<flow name="put:\ping:api-config">
+
+			<set-variable value="blog-e-test1" doc:name="moduleName" variableName="moduleName"/>
+			<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+				xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="96808fe9-035f-4255-806e-f735ec55406b">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  module: vars.moduleName,
+  projectVersion: "${project.version}",
+  apiVersion: "${api.version}",
+  env: "${mule.env}",
+  server: "${mule.server}",
+  status: "200",
+  message: "Alive"
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+	</flow>
+
+	<flow name="get:\ping:api-config">
+			<set-variable value="blog-e-test1" doc:name="moduleName" variableName="moduleName"/>
+
+			<choice doc:name="Ping Dependents" doc:id="4f893bc6-c571-4765-b936-8e03d6379dda" >
+				<when expression="#[attributes.headers.'x-dependent-ping' != null and attributes.headers.'x-dependent-ping' == &quot;true&quot;]">
+					<flow-ref doc:name="logic-invoke.ping-sys-api" doc:id="8e426a02-7ddc-45f2-9714-114d3e6fff6f" name="logic-invoke.ping-sys-api" />
+				</when>
+				<otherwise >
+					<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="4e124e9c-8316-4824-abac-1af6447ba719">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  module: vars.moduleName,
+  projectVersion: "${project.version}",
+  apiVersion: "${api.version}",
+  env: "${mule.env}",
+  server: "${mule.server}",
+  status: "200",
+  message: "Alive"
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+				</otherwise>
+			</choice>
+	</flow>
+
+</mule>
