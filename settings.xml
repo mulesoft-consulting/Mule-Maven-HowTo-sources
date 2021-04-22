@@ -58,9 +58,7 @@
 
 		
 		<!--
-                        -------------------------
                         Deployment Configurations
-                        -------------------------
 
 			These are the deployment configurations, one for each environment, server, server-group, cluster or fabric
 		-->		
