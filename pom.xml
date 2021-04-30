@@ -10,7 +10,7 @@
 	<version>1.0.0</version>
 	<packaging>mule-application</packaging>
 
-	<name>${project.artifactId}</name>
+	<name>${my-application-name}</name>
 
 	<properties>
 		<api.version>1.0.0</api.version>
@@ -26,6 +26,10 @@
 		<maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
 		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
 		<mule.maven.plugin.version>3.4.2</mule.maven.plugin.version>
+
+		<ch.workers>1</ch.workers>
+		<ch.workerType>MICRO</ch.workerType>
+
 	</properties>
 
 	<build>
