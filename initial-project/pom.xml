@@ -10,7 +10,7 @@
 	<version>1.0.0</version>
 	<packaging>mule-application</packaging>
 
-	<name>${project.artifactId}</name>
+	<name>initial-project</name>
 
 	<properties>
 		<api.version>1.0.0</api.version>

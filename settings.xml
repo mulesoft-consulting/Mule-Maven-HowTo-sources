@@ -15,7 +15,7 @@
 			<id>global-settings</id>
 			<properties>
 				<master.org.name>blog</master.org.name>
-				<company.abbr>blog-</company.abbr>
+				<company.abbr>blogx-</company.abbr>
 				<my-organization-anypoint-orgid>${my_ap_orgid}</my-organization-anypoint-orgid>
 				<api.businessGroup>APIS</api.businessGroup>
 				<ap_id>${my_ap_clid}</ap_id>
