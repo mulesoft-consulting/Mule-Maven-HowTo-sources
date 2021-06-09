@@ -1,6 +1,6 @@
 # Standardizing Maven files
 
-There are two files that are standardized to create a reusable Maven framework for Mule projects. These two files (settings.xml and pom.xml) are starting points for creating your own standard.
+There are two files that are standardized to create a reusable Maven framework for Mule projects. The two files in this project (settings.xml and pom.xml) are starting points for creating your own standard.
 
 ## About the Maven settings.xml file
 There are environment specific properties that define where a project is to be deployed, the default deployment properties, and the location of binary artifacts. These properties are specified in a settings.xml file. 
